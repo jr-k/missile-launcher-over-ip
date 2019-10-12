@@ -10,27 +10,27 @@ def index():
 
 @app.route('/left')
 def doLeft():
-    subprocess.run(['/var/www/missilelauncher/usblauncher/ctlmissile', 'left'])
+    subprocess.run(['./usblauncher/ctlmissile', 'left'])
     return "left"
 
 @app.route('/right')
 def doRight():
-    subprocess.run(['/var/www/missilelauncher/usblauncher/ctlmissile', 'right'])
+    subprocess.run(['./usblauncher/ctlmissile', 'right'])
     return "right"
 
 @app.route('/up')
 def doUp():
-    subprocess.run(['/var/www/missilelauncher/usblauncher/ctlmissile', 'up'])
+    subprocess.run(['./usblauncher/ctlmissile', 'up'])
     return "up"
 
 @app.route('/down')
 def doDown():
-    subprocess.run(['/var/www/missilelauncher/usblauncher/ctlmissile', 'down'])
+    subprocess.run(['./usblauncher/ctlmissile', 'down'])
     return "down"
 
 @app.route('/fire')
 def doFire():
-    subprocess.run(['/var/www/missilelauncher/usblauncher/ctlmissile', 'fire'])
+    subprocess.run(['./usblauncher/ctlmissile', 'fire'])
     return "fire"
 
 if __name__ == '__main__':

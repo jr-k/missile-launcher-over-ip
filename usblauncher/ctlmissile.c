@@ -19,11 +19,12 @@ int debug = 0;
 /*
  * Command to control original M&S USB missile launcher.
  */
-void send_command_ms(struct usb_device *dev, char *cmd)
+void send_command_ms(struct usb_device *dev, char *cmd, char *lenx)
 {
         usb_dev_handle *launcher;
         char data[64];
         int ret;
+
 
 	launcher = usb_open(dev);
 	if (launcher == NULL) {
@@ -113,7 +114,9 @@ void send_command_ms(struct usb_device *dev, char *cmd)
 		exit(EXIT_FAILURE);
 	}
 
-	data[6] = 8;
+    int sum = atoi( lenx );
+
+	data[6] = sum;
 	data[7] = 8;
 
 	ret = usb_control_msg(launcher,
@@ -202,8 +205,8 @@ int main(int argc, char *argv[])
 	struct usb_bus *busses, *bus;
 	struct usb_device *dev = NULL;
 
-	if (argc != 2) {
-		printf("Usage: ctlmissile [ up | down | left | right | fire ]\n");
+	if (argc != 3) {
+		printf("Usage: ctlmissile [ up | down | left | right | fire ] [length from 0 to 8]\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -222,7 +225,7 @@ int main(int argc, char *argv[])
 			}
 			if (dev->descriptor.idVendor == 0x1130 &&
 				dev->descriptor.idProduct == 0x0202) {
-				send_command_ms(dev, argv[1]);
+				send_command_ms(dev, argv[1], argv[2]);
 				break;
 			}
 			if (dev->descriptor.idVendor == 0x1941 &&

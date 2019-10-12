@@ -1,0 +1,48 @@
+This is a couple of basic programs to drive the M&S USB Missile Launcher.
+
+ctlmissile does all the actual work. You'll need libusb installed to compile
+it, but assuming you have that typing "make" should do the trick. You can then
+do:
+
+ctlmissile up
+ctlmissile down
+ctlmissile left
+ctlmissile right
+ctlmissile fire
+ctlmissile stop
+
+to do all the things you'd expect. Note you'll need to be root to use it. I
+haven't figured out a nice way to use libusb yet as a user. Anyone got some
+pointers?
+
+Oh, and you'll need to not have usbhid installed or it'll claim the device
+itself (I think I can add support so that it gets automatically disconnected
+from the device, so I'll have a look at that).
+
+usblauncher is a Perl program that uses GTK2 to provide a basic interface
+for controlling the launcher. It uses ctlmissile. Currently I've made
+ctlmissile suid root so I can run usblauncher as my normal user id, but I'm
+not sure about this long term.
+
+Jonathan McDowell <noodles@earth.li>
+
+-------
+
+I've added support for the Dream Cheeky missile launcher.  I bought this cute
+little toy as a Christmas present for my girlfriend's brother, but the 
+supplied Windows driver didn't work.  I snooped the Window's driver added 
+support to what Jonathan had already put together.
+
+I added a function call for both launchers to disconnect the device from the 
+kernel, so you won't have to worry about usbhid claiming the device.
+
+The Windows driver polled the device using interrupt transfers.  I ignored 
+them since they didn't seem to do anything.  There might be micro switches in 
+the launcher that get reported this way, but I'm not taking this launcher
+apart.
+
+I don't have a launcher anymore, so if you want help with yours, you'll have
+to find a way to provide me with one. ;)
+
+James Puderer <jpuderer@littlebox.ca>
+

@@ -1,0 +1,58 @@
+#!/usr/bin/perl
+#
+# usblauncher - a simple Gtk2 Perl app for controlling the M&S USB missile
+# launcher.
+#
+# Copyright 2006 Jonathan McDowell <noodles@earth.li>
+#
+# This is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; version 2.
+
+use warnings;
+use strict;
+
+use Gtk2 -init;
+
+sub launcher_cmd($) {
+	my $cmd = shift;
+
+	system('./ctlmissile', $cmd);
+}
+
+my $window = Gtk2::Window->new('toplevel');
+
+my $table = Gtk2::Table->new(3, 5, 1);
+
+my $buttonu = Gtk2::Button->new('Up');
+$buttonu->signal_connect(button_press_event => sub { launcher_cmd('up') });
+$buttonu->signal_connect(button_release_event => sub { launcher_cmd('stop') });
+$table->attach($buttonu, 1, 2, 0, 1, 'fill', 'fill', 0, 0);
+
+my $buttond = Gtk2::Button->new('Down');
+$buttond->signal_connect(button_press_event => sub { launcher_cmd('down') });
+$buttond->signal_connect(button_release_event => sub { launcher_cmd('stop') });
+$table->attach($buttond, 1, 2, 2, 3, 'fill', 'fill', 0, 0);
+
+my $buttonl = Gtk2::Button->new('Left');
+$buttonl->signal_connect(button_press_event => sub { launcher_cmd('left') });
+$buttonl->signal_connect(button_release_event => sub { launcher_cmd('stop') });
+$table->attach($buttonl, 0, 1, 1, 2, 'fill', 'fill', 0, 0);
+
+my $buttonr = Gtk2::Button->new('Right');
+$buttonr->signal_connect(button_press_event => sub { launcher_cmd('right') });
+$buttonr->signal_connect(button_release_event => sub { launcher_cmd('stop') });
+$table->attach($buttonr, 2, 3, 1, 2, 'fill', 'fill', 0, 0);
+
+my $buttonf = Gtk2::Button->new('Fire');
+$buttonf->signal_connect(clicked => sub { launcher_cmd('fire'); sleep 1; launcher_cmd('stop') });
+$table->attach($buttonf, 4, 5, 0, 1, 'fill', 'fill', 0, 0);
+
+my $button = Gtk2::Button->new('Quit');
+$button->signal_connect (clicked => sub { Gtk2->main_quit });
+$table->attach($button, 4, 5, 2, 3, 'fill', 'fill', 0, 0);
+
+$window->add($table);
+
+$window->show_all;
+Gtk2->main;
